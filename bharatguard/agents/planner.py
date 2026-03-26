@@ -8,6 +8,9 @@ from bharatguard.config import MODEL_NAME
 
 logger = logging.getLogger(__name__)
 
+from bharatguard.config import MODEL_NAME, PROMPT_EVOLUTION_PATH
+import os
+
 class PlannerAgent:
     """
     The architect of the system.
@@ -16,12 +19,15 @@ class PlannerAgent:
     
     def __init__(self, client: OllamaClient):
         self.client = client
+        self.system_prompt = self._load_system_prompt()
 
-    async def create_plan(self, state: AgentState) -> Dict[str, Any]:
-        """
-        Generates a structured plan with Indian compliance focus.
-        """
-        system_prompt = (
+    def _load_system_prompt(self) -> str:
+        """Loads the refined prompt if version 2 exists, else uses default."""
+        if os.path.exists(PROMPT_EVOLUTION_PATH):
+            with open(PROMPT_EVOLUTION_PATH, "r") as f:
+                return f.read()
+        
+        return (
             "You are the BharatGuard Planner. Your role is to design technical architectures "
             "that are compliant with Indian regulations.\n\n"
             "Identify which categories apply to the task (GST, UPI, Aadhaar, DPDP, RBI).\n\n"
@@ -37,12 +43,16 @@ class PlannerAgent:
             "- tech_stack: str\n"
             "- estimated_complexity: str"
         )
-        
+
+    async def create_plan(self, state: AgentState) -> Dict[str, Any]:
+        """
+        Generates a structured plan with Indian compliance focus.
+        """
         user_prompt = f"User Task: {state['user_task']}"
         
         try:
             response_text = await self.client.generate(
-                prompt=f"{system_prompt}\n\n{user_prompt}",
+                prompt=f"{self.system_prompt}\n\n{user_prompt}",
                 model=MODEL_NAME
             )
             

@@ -15,8 +15,11 @@ OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "data", "chroma")
+RESULTS_DB_PATH = os.path.join(BASE_DIR, "data", "results_chroma")
 GIT_REPO_PATH = os.getenv("GIT_REPO_PATH", "./output")
+PROMPT_EVOLUTION_PATH = os.path.join(BASE_DIR, "data", "planner_prompt_v2.txt")
 
 # Ensure necessary directories exist
 os.makedirs(DB_PATH, exist_ok=True)
+os.makedirs(RESULTS_DB_PATH, exist_ok=True)
 os.makedirs(GIT_REPO_PATH, exist_ok=True)
