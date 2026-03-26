@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "required": ["data_fiduciary", "principal_id", "consent_type", "withdrawal_path"],
+  "properties": {
+    "data_fiduciary": { "type": "string" },
+    "withdrawal_path": { "type": "string", "pattern": "^/.*" }
+  }
+}

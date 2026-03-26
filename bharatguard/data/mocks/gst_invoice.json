@@ -1,0 +1,11 @@
+{
+  "category": "GST",
+  "invoice_number": "INV-2026-001",
+  "gstin": "08AAAAA0000A1Z5",
+  "place_of_supply": "Rajasthan",
+  "hsn_code": "9701",
+  "taxable_value": 1000.0,
+  "cgst": 90.0,
+  "sgst": 90.0,
+  "total_value": 1180.0
+}

@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "required": ["vpa", "payee_name", "amount", "currency"],
+  "properties": {
+    "vpa": { "type": "string", "pattern": "^[a-zA-Z0-9.\\-_]{2,256}@[a-zA-Z]{2,64}$" },
+    "mcc": { "type": "string", "pattern": "^[0-9]{4}$" }
+  }
+}

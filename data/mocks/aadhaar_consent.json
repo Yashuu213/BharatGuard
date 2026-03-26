@@ -1,0 +1,6 @@
+{
+  "aadhaar_masked": "XXXX XXXX 1234",
+  "consent_given": true,
+  "purpose": "Identity verification for secure checkout",
+  "timestamp": "2026-03-26T14:15:00Z"
+}

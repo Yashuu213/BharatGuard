@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["aadhaar_masked", "consent_given", "purpose"],
+  "properties": {
+    "aadhaar_masked": { "type": "string", "pattern": "^X{4} X{4} [0-9]{4}$" },
+    "consent_given": { "type": "boolean" },
+    "purpose": { "type": "string", "minLength": 10 }
+  }
+}
