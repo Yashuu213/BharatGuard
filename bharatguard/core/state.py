@@ -10,8 +10,7 @@ class AgentLog(TypedDict):
 
 class AgentState(TypedDict):
     """
-    Enhanced State definition for BharatGuard Agent (Phase 3).
-    Includes fields for the Compliance Guardian Engine.
+    Final Phase 4 State definition for BharatGuard Agent.
     """
     user_task: str
     messages: Annotated[List[Dict[str, str]], operator.add]
@@ -19,11 +18,14 @@ class AgentState(TypedDict):
     plan: Dict[str, Any]
     compliance_checklist: List[Dict[str, Any]]
     
-    # Phase 3 Fields
-    compliance_details: List[Dict[str, Any]] # Detailed rule results
-    compliance_score: float # Weighted final score
-    fix_suggestions: List[str] # Actionable items for the Coder
-    compliance_loop_count: int # To prevent infinite loops (max 3)
+    compliance_details: List[Dict[str, Any]]
+    compliance_score: float
+    fix_suggestions: List[str]
+    compliance_loop_count: int
+    
+    # Phase 4 Fields
+    pdf_path: str # Path to the generated audit certificate
+    final_summary: str # High-level summary of the entire run
     
     generated_code: Dict[str, Any]
     test_results: Dict[str, Any]
@@ -32,7 +34,7 @@ class AgentState(TypedDict):
     current_version: int
 
 def create_initial_state(task: str) -> AgentState:
-    """Helper to initialize the state with Phase 3 default values."""
+    """Helper to initialize the state with full Phase 4 fields."""
     return {
         "user_task": task,
         "messages": [],
@@ -43,6 +45,8 @@ def create_initial_state(task: str) -> AgentState:
         "compliance_score": 0.0,
         "fix_suggestions": [],
         "compliance_loop_count": 0,
+        "pdf_path": "",
+        "final_summary": "",
         "generated_code": {"backend_code": "", "frontend_code": "", "files": []},
         "test_results": {"passed": 0, "total": 0, "details": []},
         "agent_logs": [],

@@ -12,8 +12,7 @@ from bharatguard.agents import (
 
 def create_graph():
     """
-    Constructs the Phase 3 LangGraph for BharatGuard.
-    Includes the Compliance Guardian loop.
+    Final Phase 4 LangGraph with professional reporting.
     """
     workflow = StateGraph(AgentState)
 
@@ -38,14 +37,11 @@ def create_graph():
     )
 
     # 3. Compliance Loop Logic
-    # After coder, always go to compliance guardian
     workflow.add_edge("coder", "compliance_guardian")
 
-    # After compliance guardian, decide: tester or back to coder
     def route_after_compliance(state: AgentState):
         score = state.get("compliance_score", 0)
         loop_count = state.get("compliance_loop_count", 0)
-        
         if score >= 75 or loop_count >= 3:
             return "tester"
         return "coder"
@@ -59,15 +55,21 @@ def create_graph():
         }
     )
 
-    # 4. Standard Edges back to Supervisor
-    workflow.add_edge("planner", "supervisor")
+    # 4. Success Routing: After Tester, we finally go to Reporter
+    # In Phase 4, the tester's exit from the supervisor loop leads to the reporter
+    # However, let's make it more explicit: tester returns to supervisor.
     workflow.add_edge("tester", "supervisor")
+    
+    # After reporter, the graph definitely ends.
     workflow.add_edge("reporter", END)
 
-    # 5. Set Entry Point
+    # 5. Hierarchy Edges back to Supervisor
+    workflow.add_edge("planner", "supervisor")
+
+    # 6. Set Entry Point
     workflow.set_entry_point("supervisor")
 
-    # 6. Setup Persistence
+    # 7. Setup Persistence
     memory = SqliteSaver.from_conn_string(":memory:")
     
     return workflow.compile(checkpointer=memory)
